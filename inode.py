@@ -15,7 +15,7 @@ class Inode:
         self.ponteiros_inode = ponteiro_inode # 4*8 = 32
         self.tamanho = self.novo_tamanho() # 9
     
-    def novo_nome(self, nome): # Arrumar - problema - ta feio
+    def novo_nome(self, nome):
         tam = len(nome)
         if tam < 42:
             nome = list(nome)
@@ -26,13 +26,13 @@ class Inode:
             nome = nome[:42]
         return nome
     
-    def novo_tamanho(self): # Arrumar - problema
+    def novo_tamanho(self):
         if len(self.ponteiros) > 0 or len(self.ponteiros_inode) > 0:
             return '000000000'
         else:
             return '000000000'
     
-    def nova_data(self): # data - funcional
+    def nova_data(self):
         data = datetime.now()
         data = [data.day, data.month, data.year, data.hour, data.minute, data.second]
         data = list(map(str, data))
@@ -42,7 +42,7 @@ class Inode:
         data = ''.join(data)  
         return data
 
-    def nova_permissao(self, diretorio): # errado arruma ai
+    def nova_permissao(self, diretorio):
         if diretorio is True:
             return 'drwxrwxrwx'
         else:
@@ -73,6 +73,6 @@ class Inode:
     
     # interacao apartir daqui #
 
-    def gravar(self): # nao funfa
+    def gravar(self):
         dados = f"{self.id+self.nome+self.criador+self.dono+self.tamanho+self.data_criacao+self.data_modificacao+self.permissoes+self.ponteiros+self.ponteiros_inode}"
         return dados

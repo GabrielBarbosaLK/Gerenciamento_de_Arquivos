@@ -1,11 +1,11 @@
 from g_inode import g_inode
 
 sistema = True
+gerenciador = g_inode()
 print("Iniciando Sistema...")
 print("Terminal Disponivel...")
 
 while sistema:
-    gerenciador = g_inode()
     dir_atual = gerenciador.dir_atual()
 
     comando = []
@@ -36,21 +36,62 @@ while sistema:
             print("Ler arquivo")
         case "cp":
             print("Copiar arquivo")
-        case "mv":
+        case "mva":
             print("Renomear/mover arquivo")
-        case "ln":
+        case "lna":
             print("Criar links entre arquivos")
         # Comandos diretorios
         case "mkdir":
-            print("Criar diretorio")
+            if len(comando) > 1:
+                absoluto = comando[-1].split('/')
+                caminho, nome = gerenciador.absoluto(absoluto, True)
+            if len(comando) == 2:
+                gerenciador.mkdir(nome, caminho[-1])
+            else:
+                print("mkdir: Operação invalida")
+                print("Tente 'mkdir [nome_diretorio]'")
         case "rmdir":
-            print("Remover diretorio")
+            if len(comando) > 1:
+                absoluto = comando[-1].split('/')
+                caminho, nome = gerenciador.absoluto(absoluto, True)
+            if len(comando) == 2:
+                gerenciador.rmdir(nome, caminho[-1])
+            else:
+                print("rmdir: Operação invalida")
+                print("Tente 'rmdir [nome_diretorio]'")
         case "ls":
-            print("Listar o conteudo de um diretorio")
+            if len(comando) > 1:
+                absoluto = comando[-1].split('/')
+                caminho, nome = gerenciador.absoluto(absoluto, False)
+            if len(comando) == 2:
+                gerenciador.ls(caminho[-1])
+            elif len(comando) == 1:
+                gerenciador.ls('atual')
+            else:
+                print("ls: Operação invalida")
+                print("Tente 'ls' ou 'ls [caminho]'")
         case "cd":
-            print("Trocar de diretorio")
+            if len(comando) > 1:
+                absoluto = comando[-1].split('/')
+                caminho, nome = gerenciador.absoluto(absoluto, False)
+            if len(comando) == 2:
+                gerenciador.cd(caminho[-1])
+            else:
+                print("cd: Operação invalida")
+                print("Tente: 'cd [nome_diretorio]'")
+        case "mv":
+            if len(comando) > 1:
+                absoluto1 = comando[-2].split('/')
+                absoluto2 = comando[-1].split('/')
+                caminho_destino, nome_destino = gerenciador.absoluto(absoluto2, True)
+                caminho_origen, nome_origen = gerenciador.absoluto(absoluto1, True)
+            if len(comando) == 3:
+                gerenciador.mv(caminho_origen[-1], caminho_destino[-1], nome_origen, nome_destino)
+            else:
+                print("mv: Operação invalida")
+                print("Tente: 'mv [diretorio_origen] [destino]")
         case "ln":
-            print("Criar links entre diretorio")
+            print("Link simbolico")
         # Encerrando
         case "poweroff":
             print("Encerrando sistema...")

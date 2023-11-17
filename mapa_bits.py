@@ -13,8 +13,13 @@ def formatar():
         file.seek(63658)
         file.write('1')
         file.seek(63658+7959)
-        node = Inode('0000', '/', True)
+        node = Inode('0000', '/', True, False)
         file.write(node.gravar())
+        limpeza = 63658+7959+167
+        for i in range(50000):
+            file.seek(limpeza + i)
+            file.write('\0')
+        
     print("Sistema formatado...")
 
 formatar()
